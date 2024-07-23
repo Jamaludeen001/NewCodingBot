@@ -1,2 +1,2 @@
-# NewCodingBot
+# SnakeGAME
 new repo
