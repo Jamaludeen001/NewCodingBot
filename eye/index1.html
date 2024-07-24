@@ -1,2 +1,45 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+</head>
+<body>
+    <h1>Upload an Image</h1>
+    <form id="upload-form" enctype="multipart/form-data" method="POST" action="/upload">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Upload Image</button>
+    </form>
+    <div id="response-message"></div>
+    <div id="image-container"></div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob()) 
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Processed Image';
+                img.style.maxWidth = '500px'; 
+                
+                document.getElementById('image-container').innerHTML = '';
+                
+                document.getElementById('image-container').appendChild(img);
+            })
+            .catch(error => {
+                document.getElementById('response-message').innerText = 'Error uploading image';
+            });
+        });
+    </script>
+</body>
 </html>
